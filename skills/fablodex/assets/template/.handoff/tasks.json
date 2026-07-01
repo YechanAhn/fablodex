@@ -1,0 +1,40 @@
+{
+  "$schema": "./schemas/tasks.schema.json",
+  "version": 1,
+  "project": "{{PROJECT_NAME}}",
+  "id": "task-001",
+  "title": "Prepare executable handoff task",
+  "owner": "claude_fable",
+  "status": "pending",
+  "instructions": "Replace this starter task with a decision-complete task before Codex implementation begins.",
+  "acceptance_criteria": [
+    "Codex can execute the task without hidden context."
+  ],
+  "qa_commands": [
+    "node ~/.codex/skills/handoff-init/scripts/validate_handoff.mjs \"$PWD\""
+  ],
+  "evidence_required": [
+    ".handoff/evidence/task-001/"
+  ],
+  "blocked_after_attempts": 2,
+  "tasks": [
+    {
+      "id": "task-001",
+      "title": "Prepare executable handoff task",
+      "owner": "claude_fable",
+      "status": "pending",
+      "instructions": "Replace this starter task with a decision-complete task before Codex implementation begins.",
+      "acceptance_criteria": [
+        "Codex can execute the task without hidden context."
+      ],
+      "qa_commands": [
+        "node ~/.codex/skills/handoff-init/scripts/validate_handoff.mjs \"$PWD\""
+      ],
+      "evidence_required": [
+        ".handoff/evidence/task-001/"
+      ],
+      "blocked_after_attempts": 2,
+      "depends_on": []
+    }
+  ]
+}

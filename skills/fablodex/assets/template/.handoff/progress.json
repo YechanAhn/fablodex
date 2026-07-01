@@ -1,0 +1,13 @@
+{
+  "$schema": "./schemas/progress.schema.json",
+  "version": 1,
+  "project": "{{PROJECT_NAME}}",
+  "created_at": "{{CREATED_AT}}",
+  "active_owner": "claude_fable",
+  "phase": "planning",
+  "current_task_id": "task-001",
+  "attempts_by_task": {},
+  "last_evidence": [],
+  "blocked_reason": "",
+  "next_action": "Claude/Fable should replace the starter task with a decision-complete handoff before Codex implementation."
+}

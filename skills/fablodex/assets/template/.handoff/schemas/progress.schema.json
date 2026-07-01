@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.codex/handoff/progress.schema.json",
+  "title": "Handoff progress",
+  "type": "object",
+  "required": [
+    "project",
+    "active_owner",
+    "phase",
+    "current_task_id",
+    "attempts_by_task",
+    "last_evidence",
+    "blocked_reason",
+    "next_action"
+  ],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "project": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "minLength": 1 },
+    "active_owner": {
+      "type": "string",
+      "enum": ["claude_fable", "codex", "lazycodex", "user"]
+    },
+    "phase": {
+      "type": "string",
+      "enum": ["planning", "research", "ready_for_codex", "implementing", "verifying", "blocked_by_fable", "escalated_fix", "complete"]
+    },
+    "current_task_id": { "type": "string" },
+    "attempts_by_task": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["attempt", "summary", "evidence"],
+          "properties": {
+            "attempt": { "type": "integer", "minimum": 1 },
+            "summary": { "type": "string", "minLength": 1 },
+            "evidence": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "last_evidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "blocked_reason": { "type": "string" },
+    "next_action": { "type": "string" }
+  },
+  "additionalProperties": true
+}

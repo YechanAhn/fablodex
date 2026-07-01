@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+command_name="${1:-help}"
+if [[ $# -gt 0 ]]; then
+  shift
+fi
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd "$script_dir/.." && pwd)"
+
+find_skill_root() {
+  if [[ -n "${FABLODEX_SKILL_ROOT:-}" && -f "$FABLODEX_SKILL_ROOT/SKILL.md" ]]; then
+    printf '%s\n' "$FABLODEX_SKILL_ROOT"
+    return
+  fi
+  if [[ -f "$repo_root/skills/fablodex/SKILL.md" ]]; then
+    printf '%s\n' "$repo_root/skills/fablodex"
+    return
+  fi
+  if [[ -f "$HOME/.codex/skills/fablodex/SKILL.md" ]]; then
+    printf '%s\n' "$HOME/.codex/skills/fablodex"
+    return
+  fi
+  echo "FabloDex skill not found. Run: fablodex install" >&2
+  exit 1
+}
+
+print_help() {
+  cat <<'HELP'
+FabloDex
+
+Usage:
+  fablodex init [project-root] [--project-name <name>]
+  fablodex validate [project-root]
+  fablodex status [project-root]
+  fablodex install
+  fablodex help
+
+Short aliases installed by install.sh:
+  fablodex-init
+  fablodex-validate
+  fablodex-status
+HELP
+}
+
+case "$command_name" in
+  init)
+    skill_root="$(find_skill_root)"
+    if [[ $# -eq 0 ]]; then
+      exec node "$skill_root/scripts/init_handoff.mjs" "$PWD" --project-name "$(basename "$PWD")"
+    fi
+    if [[ "${1:-}" == --* ]]; then
+      exec node "$skill_root/scripts/init_handoff.mjs" "$PWD" "$@"
+    fi
+    exec node "$skill_root/scripts/init_handoff.mjs" "$@"
+    ;;
+  validate)
+    skill_root="$(find_skill_root)"
+    root="${1:-$PWD}"
+    exec node "$skill_root/scripts/validate_handoff.mjs" "$root"
+    ;;
+  status)
+    root="${1:-$PWD}"
+    node --input-type=module - "$root" <<'NODE'
+import fs from "node:fs";
+import path from "node:path";
+
+const root = path.resolve(process.argv[2] || ".");
+const progressPath = path.join(root, ".handoff", "progress.json");
+
+if (!fs.existsSync(progressPath)) {
+  console.error(`missing ${progressPath}`);
+  process.exit(1);
+}
+
+const progress = JSON.parse(fs.readFileSync(progressPath, "utf8"));
+console.log(`project: ${progress.project ?? ""}`);
+console.log(`active_owner: ${progress.active_owner ?? ""}`);
+console.log(`phase: ${progress.phase ?? ""}`);
+console.log(`current_task_id: ${progress.current_task_id ?? ""}`);
+console.log(`next_action: ${progress.next_action ?? ""}`);
+if (Array.isArray(progress.last_evidence) && progress.last_evidence.length > 0) {
+  console.log(`last_evidence: ${progress.last_evidence.join(", ")}`);
+}
+NODE
+    ;;
+  install)
+    exec "$repo_root/install.sh" "$@"
+    ;;
+  help|-h|--help)
+    print_help
+    ;;
+  *)
+    echo "Unknown command: $command_name" >&2
+    print_help >&2
+    exit 2
+    ;;
+esac

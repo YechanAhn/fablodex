@@ -1,0 +1,17 @@
+{
+  "name": "fablodex",
+  "version": "0.1.0",
+  "description": "A .handoff protocol for Fable 5 to Codex workflows.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "fablodex": "./bin/fablodex",
+    "fablodex-init": "./bin/fablodex-init",
+    "fablodex-validate": "./bin/fablodex-validate",
+    "fablodex-status": "./bin/fablodex-status"
+  },
+  "scripts": {
+    "check": "node --check skills/fablodex/scripts/init_handoff.mjs && node --check skills/fablodex/scripts/validate_handoff.mjs",
+    "smoke": "./scripts/smoke-test.sh"
+  }
+}

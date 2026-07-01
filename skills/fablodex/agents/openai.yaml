@@ -1,0 +1,4 @@
+interface:
+  display_name: "FabloDex"
+  short_description: "Initialize and validate Fable-to-Codex handoff contracts."
+  default_prompt: "Initialize or validate a project-local .handoff contract for Fable-to-Codex work."

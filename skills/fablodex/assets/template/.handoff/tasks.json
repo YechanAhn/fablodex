@@ -11,7 +11,7 @@
     "Codex can execute the task without hidden context."
   ],
   "qa_commands": [
-    "node ~/.codex/skills/handoff-init/scripts/validate_handoff.mjs \"$PWD\""
+    "fablodex validate \"$PWD\""
   ],
   "evidence_required": [
     ".handoff/evidence/task-001/"
@@ -28,7 +28,7 @@
         "Codex can execute the task without hidden context."
       ],
       "qa_commands": [
-        "node ~/.codex/skills/handoff-init/scripts/validate_handoff.mjs \"$PWD\""
+        "fablodex validate \"$PWD\""
       ],
       "evidence_required": [
         ".handoff/evidence/task-001/"

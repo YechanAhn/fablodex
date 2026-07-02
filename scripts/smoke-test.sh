@@ -17,8 +17,10 @@ grep -qx "missing .handoff" "$tmpdir/red.out"
 "$repo_root/bin/fablodex" init "$tmpdir" --project-name SmokeTest > "$tmpdir/init.out"
 "$repo_root/bin/fablodex" validate "$tmpdir" > "$tmpdir/green.out"
 "$repo_root/bin/fablodex" status "$tmpdir" > "$tmpdir/status.out"
+"$repo_root/bin/fablodex" prompt "$tmpdir" > "$tmpdir/prompt.out" 2>/dev/null
 
 grep -q "handoff validation passed" "$tmpdir/green.out"
 grep -q "project: SmokeTest" "$tmpdir/status.out"
+grep -q "fablodex skill" "$tmpdir/prompt.out"
 
 echo "PASS"

@@ -65,11 +65,14 @@ In Claude Code, run your planning flow (e.g. `/deep-interview`, `/ultra-research
 
 "Decision-complete" means Codex can execute **without hidden context**. Leave unresolved external decisions (credentials, billing, deploys) as user-owned tasks, not Codex assumptions.
 
-Validate before handing off:
+Validate before handing off, then generate the paste-ready prompt for Codex:
 
 ```bash
 fablodex validate    # must print "handoff validation passed"
+fablodex prompt      # prints a ready-to-paste prompt for Codex/LazyCodex
 ```
+
+`fablodex prompt` reads `progress.json` and emits the exact prompt for whoever gets the baton next — paste it straight into Codex to start the build.
 
 ### 2. Codex builds (Codex App / LazyCodex)
 
@@ -101,6 +104,8 @@ Fable reads `blocked-by-fable.md` and both evidence files, then picks **exactly 
 - `SPLIT` — replace the blocked task with smaller executable tasks.
 - `ESCALATED_FIX` — fix directly in isolation (separate branch/worktree, scoped files only), then write `fable-fix-report.md`. Not normal operation.
 - `NEEDS_USER` — ask the user, only for external / irreversible / destructive / product-defining decisions.
+
+After each handoff — Fable finishing a plan, or Codex finishing a chunk or hitting a blocker — run `fablodex prompt` to get the paste-ready message for the other side. It detects the state and writes the right prompt (start the build, review the result, or decide the blocker) so you never hand-write the baton pass.
 
 Control returns to Codex, and the loop continues until the plan is complete.
 
@@ -172,8 +177,11 @@ The full contract lives in `skills/fablodex/references/contract.md`; bridge note
 fablodex init [project-root] [--project-name <name>]
 fablodex validate [project-root]
 fablodex status [project-root]
+fablodex prompt [project-root] [--to codex|fable]
 fablodex install
 ```
+
+`fablodex prompt` prints a ready-to-paste handoff prompt for the next agent, inferred from `progress.json` (or forced with `--to`).
 
 Aliases: `fablodex-init`, `fablodex-validate`, `fablodex-status`.
 

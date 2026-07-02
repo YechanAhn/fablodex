@@ -12,6 +12,7 @@ Use this skill to create or work from a shared `.handoff/` folder. The folder is
 - **init**: run `node <this-skill>/scripts/init_handoff.mjs <project-root> --project-name <name>`.
 - **status/resume**: read `<project-root>/.handoff/progress.json`, then `<project-root>/.handoff/handoff.md`, then the active task in `tasks.json`.
 - **validate**: run `node <this-skill>/scripts/validate_handoff.mjs <project-root>`.
+- **prompt**: run `node <this-skill>/scripts/next_prompt.mjs <project-root> [--to codex|fable]` to emit a paste-ready handoff prompt for the next agent, inferred from `progress.json`. Use after a plan, a finished chunk, or a blocker.
 - **blocked**: Codex records two failed attempts with evidence in `blocked-by-fable.md` before asking Fable to replan, split, directly fix, or ask the user.
 - **escalated-fix**: Fable may edit code only after choosing `ESCALATED_FIX`; it must update `progress.json` and write `fable-fix-report.md`.
 
@@ -33,4 +34,5 @@ Use this skill to create or work from a shared `.handoff/` folder. The folder is
 ```bash
 fablodex init
 fablodex validate
+fablodex prompt
 ```

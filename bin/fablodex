@@ -34,6 +34,7 @@ Usage:
   fablodex init [project-root] [--project-name <name>]
   fablodex validate [project-root]
   fablodex status [project-root]
+  fablodex prompt [project-root] [--to codex|fable]
   fablodex install
   fablodex help
 
@@ -59,6 +60,13 @@ case "$command_name" in
     skill_root="$(find_skill_root)"
     root="${1:-$PWD}"
     exec node "$skill_root/scripts/validate_handoff.mjs" "$root"
+    ;;
+  prompt)
+    skill_root="$(find_skill_root)"
+    if [[ "${1:-}" == --* ]]; then
+      exec node "$skill_root/scripts/next_prompt.mjs" "$PWD" "$@"
+    fi
+    exec node "$skill_root/scripts/next_prompt.mjs" "${1:-$PWD}" "${@:2}"
     ;;
   status)
     root="${1:-$PWD}"
